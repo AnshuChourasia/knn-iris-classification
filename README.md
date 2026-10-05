@@ -17,6 +17,7 @@ This project demonstrates the complete workflow of a KNN classification model:
 * Evaluating model performance
 * Visualizing the confusion matrix
 * Generating a classification report
+* Using cross-validation to select the best value of K
 
 ## 🌸 Dataset
 
@@ -53,7 +54,7 @@ The model is implemented using:
 KNeighborsClassifier(n_neighbors=5)
 ```
 
-The model uses **K = 5**, meaning it considers the 5 nearest training samples when making a prediction.
+The final model uses **K = 5**, meaning it considers the 5 nearest training samples when making a prediction.
 
 ### Feature Scaling
 
@@ -66,4 +67,89 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 ```
 
-The scaler
+The scaler is fitted only on the training data and then used to transform both the training and test data.
+
+## 🔍 K Selection with Cross-Validation
+
+Different values of K were evaluated using cross-validation to determine which value provided the best generalization performance.
+
+|     K | CV Accuracy |
+| ----: | ----------: |
+|     1 |       94.2% |
+|     2 |       95.8% |
+|     3 |       95.8% |
+|     4 |       95.8% |
+| **5** |   **96.7%** |
+|     6 |   **96.7%** |
+|     7 |       95.8% |
+|     8 |       95.8% |
+|     9 |       95.8% |
+|    10 |   **96.7%** |
+|    11 |       95.8% |
+|    12 |   **96.7%** |
+|    13 |       95.0% |
+|    14 |       95.8% |
+|    15 |       95.0% |
+|    16 |       95.8% |
+|    17 |       95.8% |
+|    18 |       94.2% |
+|    19 |       94.2% |
+|    20 |       93.3% |
+
+The highest cross-validation accuracy was **96.7%**, achieved by K = 5, 6, 10, and 12.
+
+**K = 5 was selected for the final model** because it achieved the maximum CV accuracy while keeping the model relatively simple and local.
+
+## 📊 Model Evaluation
+
+The model was evaluated using:
+
+* Accuracy
+* Confusion matrix
+* Classification report
+
+Cross-validation was also used to evaluate how model performance changes with different values of K.
+
+## 📈 Key Learning Outcomes
+
+Through this project, I practiced:
+
+* Implementing KNN classification
+* Understanding distance-based algorithms
+* Feature scaling
+* Train-test splitting
+* Model evaluation
+* Confusion matrices
+* Classification reports
+* Cross-validation
+* Hyperparameter selection using K
+
+## 📁 Project Structure
+
+```text
+knn-iris-classification/
+│
+├── knn.py
+├── requirements.txt
+└── README.md
+```
+
+## ▶️ How to Run
+
+Clone the repository and install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Then run:
+
+```bash
+python knn.py
+```
+
+## 📌 Conclusion
+
+This project demonstrates how KNN can be used for multi-class classification and how **feature scaling and cross-validation** can improve the model selection process.
+
+The final KNN model uses **K = 5** and achieved a maximum cross-validation accuracy of **96.7%** during K selection.
