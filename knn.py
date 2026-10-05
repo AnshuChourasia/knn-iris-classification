@@ -78,3 +78,62 @@ plt.show()
 
 classification_rep = classification_report(y_test, predictions, target_names=data.target_names)
 print("Classification Report:\n", classification_rep)
+
+k_values = range(1, 21)
+accuracies = []
+
+for k in k_values:
+
+    model = KNeighborsClassifier(n_neighbors=k)
+
+    model.fit(X_train, y_train)
+
+    y_pred = model.predict(X_test)
+
+    accuracy = accuracy_score(y_test, y_pred)
+
+    accuracies.append(accuracy)
+
+
+print("\n========== K vs Accuracy ==========")
+
+for k, accuracy in zip(k_values, accuracies):
+    print(f"K={k}: Accuracy={accuracy:.2f}")
+
+    plt.figure(figsize=(8, 5))
+
+plt.plot(k_values, accuracies, marker="o")
+
+plt.xlabel("K (Number of Neighbors)")
+plt.ylabel("Accuracy")
+plt.title("KNN: K vs Accuracy")
+
+plt.xticks(k_values)
+plt.grid(True)
+
+plt.show()
+
+from sklearn.model_selection import cross_val_score
+
+k_values = range(1, 21)
+cv_scores = []
+
+for k in k_values:
+
+    model = KNeighborsClassifier(n_neighbors=k)
+
+    scores = cross_val_score(
+        model,
+        X_train,
+        y_train,
+        cv=5,
+        scoring="accuracy"
+    )
+
+    cv_scores.append(scores.mean())
+
+
+print("\n========== K vs Cross-Validation Accuracy ==========")
+
+for k, score in zip(k_values, cv_scores):
+    print(f"K={k}: CV Accuracy={score:.3f}")
